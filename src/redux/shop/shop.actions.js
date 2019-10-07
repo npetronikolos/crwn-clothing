@@ -22,12 +22,6 @@ export const fetchCollectionsStartAsync = () => {
         const collectionRef = firestore.collection('collections');
         dispatch(fetchCollectionsStart());
 
-        // calling an API
-        // fetch('https://firestore.googleapis.com/v1/projects/crwn-db-50362/databases/(default)/documents/collections')
-        // .then(responce => responce.json())
-        // .then(collections => console.log(collections));
-
-
         collectionRef.get().then(snapshot => {
             const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
             dispatch(fetchCollectionsSuccess(collectionsMap));
