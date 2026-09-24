@@ -1,0 +1,35 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Collection {
+  id        Int    @id @default(autoincrement())
+  title     String @unique
+  routeName String @unique
+  items     Item[]
+}
+
+model Item {
+  id           Int        @id @default(autoincrement())
+  name         String
+  priceInCents Int
+  imageUrl     String
+  collectionId Int
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@index([collectionId])
+}
+
+model Section {
+  id       Int     @id @default(autoincrement())
+  title    String  @unique
+  imageUrl String
+  size     String?
+  linkUrl  String
+}

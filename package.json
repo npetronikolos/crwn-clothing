@@ -1,43 +1,44 @@
 {
   "name": "crwn-clothing",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "dependencies": {
-    "firebase": "^6.6.1",
-    "node-sass": "^4.12.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-redux": "^7.1.1",
-    "react-router-dom": "^5.0.1",
-    "react-scripts": "3.1.1",
-    "react-stripe-checkout": "^2.6.3",
-    "redux": "^4.0.4",
-    "redux-logger": "^3.0.6",
-    "redux-persist": "^6.0.0",
-    "redux-saga": "^1.1.1",
-    "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0",
-    "styled-components": "^4.4.0"
+  "type": "module",
+  "engines": {
+    "node": ">=20.9.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "dependencies": {
+    "@apollo/client": "^4.3.1",
+    "@apollo/client-integration-nextjs": "^0.14.5",
+    "@prisma/adapter-better-sqlite3": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "@stripe/react-stripe-js": "^6.12.0",
+    "@stripe/stripe-js": "^9.17.0",
+    "firebase": "^12.19.0",
+    "graphql": "^16.14.2",
+    "graphql-yoga": "^5.24.1",
+    "next": "^16.3.6",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "rxjs": "^7.8.2",
+    "stripe": "^22.6.2",
+    "styled-components": "^6.5.3"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.6",
+    "prisma": "^7.10.0",
+    "vitest": "^5.0.1"
   }
 }

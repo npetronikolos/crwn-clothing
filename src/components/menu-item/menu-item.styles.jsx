@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const MenuItemContainer = styled.div`
-	height: ${({ size }) => (size ? '380px' : '240px')}
+	height: ${({ $size }) => ($size ? '380px' : '240px')};
 	min-width: 30%;
 	overflow: hidden;
 	flex: 1 1 auto;
@@ -39,7 +39,7 @@ export const BackgroundImageContainer = styled.div`
   height: 100%;
   background-size: cover;
   background-position: center;
-  background-image: ${({ imageUrl }) => `url(${imageUrl})`};
+  background-image: ${({ $imageUrl }) => `url(${$imageUrl})`};
 `;
 
 export const ContentContainer = styled.div`
