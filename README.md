@@ -1,68 +1,67 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# CRWN Clothing
 
-## Available Scripts
+An online clothing store built with **Next.js (App Router)**, a **GraphQL** API, and **Prisma**.
 
-In the project directory, you can run:
+## Stack
 
-### `npm start`
+| Layer | Technology |
+| --- | --- |
+| Framework | Next.js 16, React 19 |
+| API | GraphQL Yoga at `/api/graphql` (GraphiQL in development) |
+| Data | Prisma 7 + SQLite (`prisma/schema.prisma`) |
+| Client data | Apollo Client 4 — Server Components query the schema in-process; client components call `/api/graphql` |
+| Auth | Firebase Authentication (email/password and Google) |
+| Payments | Stripe Payment Element, via the `createPaymentIntent` mutation |
+| Styling | styled-components 6 |
+| Cart state | React context, persisted to `localStorage` |
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Getting started
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+```bash
+cp .env.example .env    # then fill in your Stripe test keys
+npm install             # also generates the Prisma client
+npm run db:migrate      # creates prisma/dev.db and applies migrations
+npm run db:seed         # loads the catalogue from prisma/data
+npm run dev             # http://localhost:3000
+```
 
-### `npm test`
+Open http://localhost:3000/api/graphql to try queries in GraphiQL, for example:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```graphql
+{
+  collection(routeName: "hats") {
+    title
+    items { id name price }
+  }
+}
+```
 
-### `npm run build`
+## Scripts
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Script | Description |
+| --- | --- |
+| `npm run dev` | Start the dev server |
+| `npm run build` / `npm start` | Production build / serve |
+| `npm run lint` | ESLint (Next.js core web vitals rules) |
+| `npm test` | Vitest unit tests |
+| `npm run db:migrate` | Create/apply migrations in development |
+| `npm run db:deploy` | Apply migrations in production |
+| `npm run db:seed` | Reset and seed the catalogue |
+| `npm run db:studio` | Browse the database in Prisma Studio |
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Project layout
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+prisma/            schema, migrations, seed script and seed data
+src/app/           routes (App Router) and the GraphQL route handler
+src/graphql/       GraphQL schema, resolvers and client operations
+src/components/    UI components
+src/contexts/      cart and user React contexts
+src/lib/           Prisma, Apollo, Firebase and styled-components setup
+```
 
-### `npm run eject`
+## Using PostgreSQL instead of SQLite
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+1. Set `provider = "postgresql"` in `prisma/schema.prisma`.
+2. `npm install @prisma/adapter-pg` and swap `PrismaBetterSqlite3` for `PrismaPg` in `src/lib/prisma.js`.
+3. Point `DATABASE_URL` at your database, delete `prisma/migrations`, and run `npm run db:migrate && npm run db:seed`.
